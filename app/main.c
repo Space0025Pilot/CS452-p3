@@ -25,6 +25,7 @@ int main(int argc, char **argv)
   mergesort_mt(A_, size, t);
   end = getMilliSeconds();
   printf("%f %d\n",end-start, t);
+  free(A_);
 
   return 0;
 }

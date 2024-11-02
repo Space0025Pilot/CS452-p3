@@ -1,6 +1,9 @@
 #include <stdlib.h>
+#include <pthread.h>
 #include <sys/time.h> /* for gettimeofday system call */
-#include "lab.h"
+#include "../src/lab.h"
+
+int number_threads = 0;
 
 /**
  * @brief Standard insertion sort that is faster than merge sort for small array's
@@ -105,4 +108,40 @@ double getMilliSeconds()
   struct timeval now;
   gettimeofday(&now, (struct timezone *)0);
   return (double)now.tv_sec * 1000.0 + now.tv_usec / 1000.0;
+}
+
+void mergesort_mt(int *A, int n, int num_thread){
+  number_threads = num_thread;
+  struct parallel_args args = {A, 0, n-1,0};
+  parallel_mergesort((void *)&args);
+}
+
+void *parallel_mergesort(void *args){
+  struct parallel_args * pa = (struct parallel_args *)args;
+  int *A = pa->A;
+  int start = pa->start;
+  int end = pa->end;
+
+  int q = (start + end) / 2;
+  if (start - end + 1 <=  INSERTION_SORT_THRESHOLD)
+    {
+      insertion_sort(A, start, end);
+    }
+  else
+    {
+
+      struct parallel_args leftArgs = {A, start, q,0};
+      struct parallel_args rightArgs = {A, q + 1, end,0};
+
+      // Create threads for left and right halves
+      pthread_create(&leftArgs.tid, NULL, parallel_mergesort, &leftArgs);
+      pthread_create(&rightArgs.tid, NULL, parallel_mergesort, &rightArgs);
+
+      // Join threads after creation
+      pthread_join(leftArgs.tid, NULL);
+      pthread_join(rightArgs.tid, NULL);
+      
+    }
+    merge_s(A, start, q, end);
+    return NULL;
 }
