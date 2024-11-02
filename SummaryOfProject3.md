@@ -11,9 +11,13 @@ We were tasked with taking an existing data structure that is not thread safe an
 The Learning Outcomes that apply are below:
 
 1.4 Apply computer science theory and software development fundamentals to produce computing-based solutions. (ABET Outcome 6)
+
 1.5 Use simple shell scripts and system tools to analyze process behavior
+
 3.1 Analyze a complex computing problem and apply principles of computing and other relevant disciplines to identify solutions. (ABET Outcome 1)
+
 3 Construct applications that utilize processes, threads, and synchronization primitives to solve problems requiring concurrent or parallel computation
+
 3.2 Explore the effects of multiple threads operating on the same buffer
 
 # 2. Project Management Plan
@@ -22,7 +26,10 @@ The Learning Outcomes that apply are below:
     b. Task 2 - Implement the header file lab.h in lab.c: Before I began writing any code, I wrote out all the psuedocode for my project. This took me a couple hours however, I found that this solidified my understanding of how main.c was working with the lab.h and lab.c. It also gave me a deeper understanding of what I was expected to create behind the scenes to make this code work. 
     c. Task 3 - Read the pthread documentation: Took a deep dive into the documentation to make sure that I understood what each function call was doing and how it was doing what its preposed purpose is.
 
-    d. Task 4 - Coded Queue Struct: Here I initialized my struct. I created the components consisting of an array of pointers, max capacity, size, two queue conditional variables, queue lock, and a shutdown flag.
+    d. Task 4 - Implement Mergesort_mt and parallel_mergesort:
+
+    Driver App Screenshot: 
+    ![Driver App Results](DriverAppResults.png)
     e. Task 5 - Implemented queue_init function: Here I was able to create the new queue and allocate the memory that was needed. Afterwards, I instantiated and initialized all variables to their starting values.
     f. Task 6 - Implemented queue_destroy: All that was necessary here was to free the allocated memory for the array of pointers and the queue struct itself.
     g. Task 7 - Implemented enqueue: For the start of this, I locked and unlocked the queue lock so that I wouldn't forget this step. Then I wrote the conditional if statements, one -> (if size = capacity and shutdown = false) and two -> (if shutdown = true). Then, the rest is just adding the data to the queue. Also, broadcasting at the end making sure if anything waiting would be woken up.
