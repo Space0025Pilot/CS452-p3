@@ -28,8 +28,9 @@ The Learning Outcomes that apply are below:
 
     d. Task 4 - Implement Mergesort_mt and parallel_mergesort:
 
-    Driver App Screenshot: 
-    ![Driver App Results](DriverAppResults.png)
+Driver App Screenshot: 
+![Driver App Results](DriverAppResults.png)
+
     e. Task 5 - Implemented queue_init function: Here I was able to create the new queue and allocate the memory that was needed. Afterwards, I instantiated and initialized all variables to their starting values.
     f. Task 6 - Implemented queue_destroy: All that was necessary here was to free the allocated memory for the array of pointers and the queue struct itself.
     g. Task 7 - Implemented enqueue: For the start of this, I locked and unlocked the queue lock so that I wouldn't forget this step. Then I wrote the conditional if statements, one -> (if size = capacity and shutdown = false) and two -> (if shutdown = true). Then, the rest is just adding the data to the queue. Also, broadcasting at the end making sure if anything waiting would be woken up.
