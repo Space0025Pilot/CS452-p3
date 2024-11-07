@@ -31,7 +31,7 @@ if [ -e ./myprogram ]; then
     fi
     echo "Running myprogram to generate data"
     echo "#Time Threads" >> data.dat
-    for n in {1..32}; do
+    for n in {1..9}; do
         echo -ne "running $n thread \r"
         ./myprogram "$size" "$n" >> data.dat
     done
