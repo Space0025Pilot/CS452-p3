@@ -62,7 +62,13 @@ Driver App Screenshot:
 
     When the ./myprogram is run my code runs completely and returns the expected output.
     Results copied from terminal below:
-        
+    @Space0025Pilot ➜ /workspaces/CS452-p3 (master) $ ./myprogram 1000 2
+    1.313965 2
+    @Space0025Pilot ➜ /workspaces/CS452-p3 (master) $ ./myprogram 1000 3
+    1.237061 3
+    @Space0025Pilot ➜ /workspaces/CS452-p3 (master) $ ./myprogram 1000 4
+    1.000000 4
+    
 
 # 4. Self-Reflection of Project 2
 
