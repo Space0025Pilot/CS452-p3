@@ -3,8 +3,6 @@
 #include <sys/time.h> /* for gettimeofday system call */
 #include "../src/lab.h"
 
-int number_threads = 0;
-
 /**
  * @brief Standard insertion sort that is faster than merge sort for small array's
  *
@@ -111,37 +109,38 @@ double getMilliSeconds()
 }
 
 void mergesort_mt(int *A, int n, int num_thread){
-  number_threads = num_thread;
-  struct parallel_args args = {A, 0, n-1,0};
-  parallel_mergesort((void *)&args);
+  pthread_t threads[num_thread];
+  struct parallel_args args[num_thread];
+
+  int chunk_size = n / num_thread;
+  int remainder = n % num_thread;
+  int start_index = 0;
+
+  for(int i = 0; i < num_thread; i++){
+    args[i].start = start_index;
+    args[i].end = start_index + chunk_size - 1 + (i < remainder);
+    args[i].A = A;
+
+    pthread_create(&threads[i], NULL, parallel_mergesort, &args[i]);
+    // pthread_t tid = pthread_self();
+    // args[i].tid = tid;
+
+    start_index = args[i].end + 1;
+  }
+
+  for(int i = 0; i < num_thread; i++){
+    pthread_join(threads[i], NULL);
+  }
+
+  for(int i = 0; i < num_thread - 1; i++){
+    merge_s(args[i].A, 0, args[i].end, args[i + 1].end);
+  }
+  
 }
 
 void *parallel_mergesort(void *args){
   struct parallel_args * pa = (struct parallel_args *)args;
-  int *A = pa->A;
-  int start = pa->start;
-  int end = pa->end;
 
-  int q = (start + end) / 2;
-  if (start - end + 1 <=  INSERTION_SORT_THRESHOLD)
-    {
-      insertion_sort(A, start, end);
-    }
-  else
-    {
-
-      struct parallel_args leftArgs = {A, start, q,0};
-      struct parallel_args rightArgs = {A, q + 1, end,0};
-
-      // Create threads for left and right halves
-      pthread_create(&leftArgs.tid, NULL, parallel_mergesort, &leftArgs);
-      pthread_create(&rightArgs.tid, NULL, parallel_mergesort, &rightArgs);
-
-      // Join threads after creation
-      pthread_join(leftArgs.tid, NULL);
-      pthread_join(rightArgs.tid, NULL);
-      
-    }
-    merge_s(A, start, q, end);
-    return NULL;
+  mergesort_s(pa->A,pa->start,pa->end);
+  pthread_exit(NULL);
 }
